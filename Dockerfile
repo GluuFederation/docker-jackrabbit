@@ -1,18 +1,14 @@
-# FROM adoptopenjdk/openjdk11:jre-11.0.8_10-alpine
-FROM adoptopenjdk/openjdk11:jdk-11.0.8_10-alpine
-
-# symlink JVM
-RUN mkdir -p /usr/lib/jvm/default-jvm /usr/java/latest \
-    && ln -sf /opt/java/openjdk /usr/lib/jvm/default-jvm/jre \
-    && ln -sf /usr/lib/jvm/default-jvm/jre /usr/java/latest/jre
+FROM alpine:3.13
 
 # ===============
 # Alpine packages
 # ===============
 
 RUN apk update \
-    && apk add --no-cache py3-pip tini \
-    && apk add --no-cache --virtual build-deps wget git gcc musl-dev python3-dev libffi-dev openssl-dev libxml2-dev libxslt-dev
+    && apk add --no-cache py3-pip tini openjdk11-jre-headless \
+    && apk add --no-cache --virtual build-deps wget git gcc musl-dev python3-dev libffi-dev openssl-dev libxml2-dev libxslt-dev cargo \
+    && mkdir -p /usr/java/latest \
+    && ln -sf /usr/lib/jvm/default-jvm/jre /usr/java/latest/jre
 
 # =====
 # Jetty
